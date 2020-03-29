@@ -1,5 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h2= title
+  p
+    | Welcome 
+    input(type="text", placeholder="username", id="username")
+    | to #{title}
+  p 
+    button#new-public-game.btn.btn-primary New public game    
+    | 
+    button#new-private-game.btn.btn-primary New private game  
+    
+  p List of games : 
+    ul#games
+

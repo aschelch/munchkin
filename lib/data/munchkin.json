@@ -1,0 +1,25 @@
+{
+    "doors": [
+        {"type":"class", "name": "Guerrier"},
+        {"type":"class", "name": "Guerrier"},
+        {"type":"class", "name": "Voleur"},
+        {"type":"race", "name": "Nain"},
+        {"type":"race", "name": "Nain"},
+        {"type":"race", "name": "Elfe"},
+        {"type":"monster", "name": "Gobelin Estropié"},
+        {"type":"monster", "name": "ÉlÉmentaire de Morve"},
+        {"type":"monster", "name": "Gerbosaure"},
+        {"type":"curse", "name": "Malédiction ! Commun des morteks"},
+        {"type":"curse", "name": "Malédiction ! Odeur Corporelle"},
+        {"type":"action", "name": "Nichée"},
+        {"type":"action", "name": "Enooooorme !"},
+        {"type":"action", "name": "Annihilation !"},
+        {"type":"action", "name": "Monstre Errant !"}
+    ],
+    "treasures" : [
+        {"type":"item", "name":"Casquelette"},
+        {"type":"item", "name":"Lumière Eternelle"},
+        {"type":"item", "name":"Chapeau en Papier d'Alu"},
+        {"type":"item", "name":"Sandales de protection"}
+    ]
+}

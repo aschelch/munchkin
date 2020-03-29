@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h3 Game #{gameId}
+  p List of players : 
+    ul#players
+
+  p Center :
+    button#open-door.btn.btn-primary Open the door
+    span#door-card
+  p  
+    button#take-door-card.btn.btn-primary Take one Door Card 
+    | 
+    button#take-treasure-card.btn.btn-primary Take one Treasure Card   
+    | 
+    button#roll-dice.btn.btn-primary Roll a dice  
+
+  p Your board : 
+   ul#board
+
+  p Your hand :
+    ul#hand
