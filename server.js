@@ -228,6 +228,30 @@ io.on('connection', function(socket) {
       broadcastPlayersList(game);
     });
 
+    socket.on('equip-board-card', (data) => {
+      debug('Player equip a card from his board '+data.gameId);
+
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.equipBoardCard(data.playerId, data.cardId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('unequip-board-card', (data) => {
+      debug('Player unequip a card from his board '+data.gameId);
+
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.unequipBoardCard(data.playerId, data.cardId);
+      broadcastPlayersList(game);
+    });
+
     socket.on('give-hand-card', (data) => {
       debug('Player give a card '+data.gameId);
       

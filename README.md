@@ -4,10 +4,10 @@ Munchkin is an online game of Munchkin card game
 
 ## TODO
 
+* Defausse
 * Add to the room
 * Play a curse on other player 
 * Play monster enhancement
-* Equip/desequip item
 * Handle multiple game in the same time (issue localstorage)
 
 ## Installation

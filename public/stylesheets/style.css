@@ -4,11 +4,21 @@
 
 .card {
   transition: transform .2s; /* Animation */
-  width: 150px;
+  width: 100px;
+}
+
+#players .card{
+  width: 75px;
 }
 .card:active {
   transform: scale(3);
+  opacity: 100%;
   z-index:1000;
+}
+
+.card-not-equiped{
+  opacity: 50%;
+  //transform: rotate(90deg);
 }
 
 .card-item{

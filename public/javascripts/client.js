@@ -16,7 +16,7 @@ var currentPlayerId = localStorage.getItem("playerId");
 
 function displayCard(card){
     var text = "";
-    text+= "<img src='images/deck/"+card.img+"' class='rounded card' style='width:100px;' title='"+escape(card.name)+"'/>";
+    text+= '<img src="images/deck/'+card.img+'" class="rounded card '+(card.equiped?'':'card-not-equiped')+'" title="'+card.name+'"/>';
     return text;
 }
 
@@ -88,11 +88,9 @@ socket.on('hand-card-list', function(cards) {
 // Update board card list
 socket.on('board-card-list', function(cards) {
     $("#board").empty();
-
     $('#board-empty').toggle(cards.length == 0);
-
     cards.forEach(function(card, index){
-        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>défausser</button></div></li>");
+        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs "+(card.equiped?"unequip":"equip")+"-board-card' data-card-id='"+index+"'>"+(card.equiped?"déséquiper":"équiper")+"</button><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>défausser</button></div></li>");
     });
 });
 
@@ -241,6 +239,22 @@ $(function () {
 
     $(document ).on("click", '.discard-board-card', function(){
         socket.emit('discard-board-card', {
+            'gameId' : gameId,
+            'playerId' : currentPlayerId,
+            'cardId' : $(this).data('card-id')
+        });
+    });
+
+    $(document ).on("click", '.equip-board-card', function(){
+        socket.emit('equip-board-card', {
+            'gameId' : gameId,
+            'playerId' : currentPlayerId,
+            'cardId' : $(this).data('card-id')
+        });
+    });
+
+    $(document ).on("click", '.unequip-board-card', function(){
+        socket.emit('unequip-board-card', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
             'cardId' : $(this).data('card-id')
