@@ -179,6 +179,19 @@ io.on('connection', function(socket) {
     });
 
 
+    socket.on('take-open-door', (data) => {
+      debug('Player take open door '+data.gameId);
+
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.playerTakeOpenDoor(data.playerId);
+      broadcastPlayersList(game);
+    });
+
+
     socket.on('play-card', (data) => {
       debug('Player play a card '+data.gameId);
 
@@ -222,10 +235,20 @@ io.on('connection', function(socket) {
         return;
       }
 
-      console.log(data);
-
       var game = games.get(data.gameId);
       game.giveHandCard(data.playerId, data.cardId, data.givenPlayerId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('give-board-card', (data) => {
+      debug('Player give a board card '+data.gameId);
+      
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.giveBoardCard(data.playerId, data.cardId, data.givenPlayerId);
       broadcastPlayersList(game);
     });
 

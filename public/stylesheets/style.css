@@ -17,3 +17,18 @@
   overflow: auto;
   font-size: 0.8em;
 }
+
+#logs li:nth-of-type(odd){
+  background-color: rgba(223, 223, 223, 0.431) ;
+}
+
+.roomzone, .boardzone, .handzone{
+  margin: 10px 0;
+  padding : 10px;
+  background: lightgray;
+}
+
+.empty{
+  font-size: 0.8em;
+  color:grey;
+}

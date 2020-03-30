@@ -1,7 +1,7 @@
 var socket = io.connect();
 
 if( ! localStorage.getItem("username")){
-    localStorage.setItem("username", "Anonymous");
+    localStorage.setItem("username", "Anonyme");
 }
 
 var gameId = null;
@@ -44,15 +44,19 @@ socket.on('game-joined', function(playerId){
 });
 
 socket.on('no-more-treasure-card', function(){
-    $("#take-treasure-card").text("No more treasure card").prop('disabled', true);
+    $("#take-treasure-card").text("Aucune carte trésor").prop('disabled', true);
 });
 
 socket.on('no-more-door-card', function(){
-    $("#take-door-card").text("No more door card").prop('disabled', true);
+    $("#take-door-card").text("Aucune carte donjon").prop('disabled', true);
 });
 
 socket.on('door-opened', function(card){
-    $("#door-card").html("Behind the door : " + displayCard(card));
+    $("#door-card").html(displayCard(card));
+});
+
+socket.on('door-taken', function(){
+    $("#door-card").html("");
 });
 
 socket.on('log', function(logs){
@@ -64,19 +68,19 @@ socket.on('log', function(logs){
 
 // Update dice value
 socket.on('dice-rolled', function(value) {
-    $("#roll-dice").text("Roll a dice : " + value);
+    $("#roll-dice").text("Lancer un dé : " + value);
 });
 // Update dice value
 socket.on('dice-rolling', function(value) {
-    $("#roll-dice").text("Rolling a dice...");
+    $("#roll-dice").text("Lancement d'un dé...");
 });
 
 // Update hand card list
 socket.on('hand-card-list', function(cards) {
     $("#hand").empty();
+    $('#hand-empty').toggle(cards.length == 0);
     cards.forEach(function(card, index){
-        console.log(card);
-        $("#hand").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs play-card' data-card-id='"+index+"'>play</button> <div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>give</button><ul class='dropdown-menu give-hand-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-hand-card' data-card-id='"+index+"'>discard</button></div></li>");
+        $("#hand").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs play-card' data-card-id='"+index+"'>poser</button> <div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-hand-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-hand-card' data-card-id='"+index+"'>défausser</button></div></li>");
     });
 });
 
@@ -84,8 +88,11 @@ socket.on('hand-card-list', function(cards) {
 // Update board card list
 socket.on('board-card-list', function(cards) {
     $("#board").empty();
+
+    $('#board-empty').toggle(cards.length == 0);
+
     cards.forEach(function(card, index){
-        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>give</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>discard</button></div></li>");
+        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>défausser</button></div></li>");
     });
 });
 
@@ -94,8 +101,6 @@ socket.on('player-list', function(datas) {
     $("#players").empty();
     $(".give-hand-card").empty();
     $(".give-board-card").empty();
-
-    console.log(datas);
 
     players = datas;
     players.forEach(player => {
@@ -158,6 +163,12 @@ $(function () {
 
     $("#open-door").on("click", () => {
         socket.emit('open-door', {
+            'gameId' : gameId,
+            'playerId' : currentPlayerId,
+        });
+    });
+    $("#take-open-door").on("click", () => {
+        socket.emit('take-open-door', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
         });
@@ -238,6 +249,15 @@ $(function () {
 
     $(document ).on("click", '.give-hand-card a', function(){
         socket.emit('give-hand-card', {
+            'gameId' : gameId,
+            'playerId' : currentPlayerId,
+            'cardId' : $(this).parent().parent().data('card-id'),
+            'givenPlayerId' : $(this).data('player-id')
+        });
+    });
+
+    $(document ).on("click", '.give-board-card a', function(){
+        socket.emit('give-board-card', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
             'cardId' : $(this).parent().parent().data('card-id'),
