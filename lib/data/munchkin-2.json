@@ -1,0 +1,32 @@
+{
+    "doors": [
+        
+        {"type":"monster", "name": "Gobelin Estropié"},
+        {"type":"monster", "name": "ÉlÉmentaire de Morve"},
+        {"type":"monster", "name": "Gerbosaure"},
+        {"type":"monster", "name": "Main Rampante", "level":5, "zombie":true, "successTreasures": 2},
+        {"type":"monster", "name": "Avocat Fantôme", "level":11, "zombie":true, "successTreasures": 3},
+        {"type":"monster", "name": "Judge Fredd", "level":17, "successTreasures": 4, "successLevel": 2},
+        {"type":"curse", "name": "Malédiction ! Odeur Corporelle"},
+        {"type":"curse", "name": "Malédiction ! Nécrophobie "},
+        {"type":"action", "name": "Nichée"},
+        {"type":"action", "name": "Enooooorme !"},
+        {"type":"action", "name": "Annihilation !"},
+        {"type":"action", "name": "Monstre Errant !"}
+    ],
+    "treasures" : [
+        {"type":"item", "name":"Casquelette"},
+        {"type":"item", "name":"Tronçonneuse de la Mort", "bonus": 3, "price":600, "big": true, "hand": 2},
+        {"type":"item", "name":"Lumière Eternelle"},
+        {"type":"item", "name":"Chapeau en Papier d'Alu"},
+        {"type":"item", "name":"Sandales de protection"},
+        {"type":"item", "name":"Missile Magique", "bonus":5, "price":300},
+        {"type":"item", "name":"Oh, les Jolis Ballons !", "bonus":5},
+        {"type":"gual", "name":"Échange de Feuilles de Personnage"},
+        {"type":"gual", "name":"Laver la voiture du MJ"},
+        {"type":"item", "name":"Anneau de Souhait", "price":500},
+        {"type":"item", "name":"Poil à gratter", "price":200},
+        {"type":"item", "name":"Braguette cloutée", "price":600, "bonus":{"man":4, "woman":2}},
+        {"type":"item", "name":"Casque de virilité ostentatoire", "price":600, "bonus":{"elf":3, "other":1}}
+    ]
+}

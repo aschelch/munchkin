@@ -6,6 +6,8 @@ var logger = require('morgan');
 var debug = require('debug')('munchkin:server');
 var http = require('http');
 var SocketIO = require('socket.io');
+
+const Utils = require('./lib/Utils');
 const HashMap = require('hashmap');
 const Game = require('./lib/Game');
 
@@ -17,7 +19,7 @@ var app = express();
 var debug = require('debug')('munchkin:server');
 var http = require('http');
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = Utils.normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 
@@ -38,8 +40,6 @@ app.get('/', function(req, res, next) {
 app.get('/:id', function(req, res, next) {
   var gameId = req.params.id
 
-
-
   if( ! games.has(gameId)){
     //res.redirect('/')
     //return;
@@ -49,7 +49,7 @@ app.get('/:id', function(req, res, next) {
       broadcastGameList();
   }
 
-  res.render('game', {gameId : gameId});
+  res.render('game', {gameId : gameId, title: 'Munchkin Online' });
 })
 
 // catch 404 and forward to error handler
@@ -94,25 +94,37 @@ function broadcastPlayersList(game){
 }
 
 const io = SocketIO(server);
+
 io.on('connection', function(socket) {
     debug('New socket connected : ' + socket.id)
-    
+
+
+
+
     broadcastGameList();
-    
+  
     socket.on('new-private-game', () => {
       var game = Game.createPrivate();
       games.set(game.id, game);
+      socket.emit('game-created', game.id);
       broadcastGameList();
     });
 
     socket.on('new-public-game', () => {
       var game = Game.createPublic();
       games.set(game.id, game);
+      socket.emit('game-created', game.id);
       broadcastGameList();
     });
 
+
+
+
+
+
     socket.on('join-game', (data) => {
       debug('Player join game '+data.gameId);
+
       if( ! games.has(data.gameId)){ 
         return;
       }
@@ -120,8 +132,9 @@ io.on('connection', function(socket) {
       socket.join(data.gameId);
 
       var game = games.get(data.gameId);
-      game.addNewPlayer(socket, {username: data.username});
-
+      var playerId = game.addPlayer(socket, data);
+      
+      socket.emit('game-joined', playerId);
       broadcastPlayersList(game);
       broadcastGameList();
     });
@@ -134,10 +147,8 @@ io.on('connection', function(socket) {
       }
 
       var game = games.get(data.gameId);
-      game.playerTakeDoorCard(socket.id);
-
+      game.playerTakeDoorCard(data.playerId);
       broadcastPlayersList(game);
-
     });
 
     socket.on('take-treasure-card', (data) => {
@@ -148,10 +159,8 @@ io.on('connection', function(socket) {
       }
 
       var game = games.get(data.gameId);
-      game.playerTakeTreasureCard(socket.id);
-
+      game.playerTakeTreasureCard(data.playerId);
       broadcastPlayersList(game);
-
     });
 
     socket.on('open-door', (data) => {
@@ -162,8 +171,8 @@ io.on('connection', function(socket) {
       }
 
       var game = games.get(data.gameId);
-      game.playerOpenDoor(socket.id);
-
+      game.playerOpenDoor(data.playerId);
+      broadcastPlayersList(game);
     });
 
 
@@ -175,12 +184,71 @@ io.on('connection', function(socket) {
       }
 
       var game = games.get(data.gameId);
-      game.playerPlayCard(socket.id, data.cardId);
-
+      game.playerPlayCard(data.playerId, data.cardId);
       broadcastPlayersList(game);
-
     });
 
+    socket.on('discard-hand-card', (data) => {
+      debug('Player discard a card '+data.gameId);
+
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.discardHandCard(data.playerId, data.cardId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('discard-board-card', (data) => {
+      debug('Player discard a card from his board '+data.gameId);
+
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.discardBoardCard(data.playerId, data.cardId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('give-hand-card', (data) => {
+      debug('Player give a card '+data.gameId);
+      
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      console.log(data);
+
+      var game = games.get(data.gameId);
+      game.giveHandCard(data.playerId, data.cardId, data.givenPlayerId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('increase-level', (data) => {
+      debug('Player level increased '+data.gameId);
+      
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.increasePlayerLevel(data.playerId, data.givenPlayerId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('decrease-level', (data) => {
+      debug('Player level increased '+data.gameId);
+      
+      if( ! games.has(data.gameId)){ 
+        return;
+      }
+
+      var game = games.get(data.gameId);
+      game.decreasePlayerLevel(data.playerId, data.givenPlayerId);
+      broadcastPlayersList(game);
+    });
     
 
     socket.on('roll-dice', (data) => {
@@ -189,20 +257,18 @@ io.on('connection', function(socket) {
       if( ! games.has(data.gameId)){ 
         return;
       }
-      io.to(data.gameId).emit('dice-rolling');
 
+      io.to(data.gameId).emit('dice-rolling');
       setTimeout(function(){
-        io.to(data.gameId).emit('dice-rolled', rollDice(1, 6));
+        io.to(data.gameId).emit('dice-rolled', Utils.rollDice(1, 6));
       }, 1000);
     });
 
     
     socket.on('disconnect', () => {
+
       games.forEach(game => {
-        game.removePlayer(socket.id);
-        if(game.getPlayers().size == 0){
-          
-        }      
+        game.disconnectPlayer(socket.id);    
         broadcastPlayersList(game);
       });
       broadcastGameList();
@@ -210,46 +276,13 @@ io.on('connection', function(socket) {
 
 });
 
-
-
-
-
-
 module.exports = app;
 
 
 
-
-
-function rollDice(min, max) {
-  return min + Math.floor(Math.random() * (max-min + 1))
-}
-
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;

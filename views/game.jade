@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h3 Game #{gameId}
+  h3#title Game #{gameId}
   p List of players : 
     ul#players
 
@@ -15,8 +15,8 @@ block content
     | 
     button#roll-dice.btn.btn-primary Roll a dice  
 
-  p Your board : 
-   ul#board
+  h6 Your board : 
+  ul#board
 
-  p Your hand :
-    ul#hand
+  h6 Your hand :
+  ul#hand
