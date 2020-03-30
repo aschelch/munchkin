@@ -2,6 +2,17 @@
 
 Munchkin is an online game of Munchkin card game 
 
+## TODO
+
+* Handle multiple game in the same time (issue localstorage)
+* Take center card (after opening a door)
+* Play a curse on other player 
+* Play monster enhancement
+* Equip/desequip item
+* Add gear counter, modifier counter and total strength counter
+* Add history log 
+* Deploy 
+
 ## Installation
 
 Clone the repo
