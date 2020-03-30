@@ -231,11 +231,7 @@ io.on('connection', function(socket) {
 
     socket.on('increase-level', (data) => {
       debug('Player level increased '+data.gameId);
-      
-      if( ! games.has(data.gameId)){ 
-        return;
-      }
-
+      if( ! games.has(data.gameId)) return;
       var game = games.get(data.gameId);
       game.increasePlayerLevel(data.playerId, data.givenPlayerId);
       broadcastPlayersList(game);
@@ -243,13 +239,25 @@ io.on('connection', function(socket) {
 
     socket.on('decrease-level', (data) => {
       debug('Player level increased '+data.gameId);
-      
-      if( ! games.has(data.gameId)){ 
-        return;
-      }
-
+      if( ! games.has(data.gameId)) return;
       var game = games.get(data.gameId);
       game.decreasePlayerLevel(data.playerId, data.givenPlayerId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('increase-gear', (data) => {
+      debug('Player gear increased '+data.gameId);
+      if( ! games.has(data.gameId)) return;
+      var game = games.get(data.gameId);
+      game.increasePlayerGear(data.playerId, data.givenPlayerId);
+      broadcastPlayersList(game);
+    });
+
+    socket.on('decrease-gear', (data) => {
+      debug('Player gear increased '+data.gameId);
+      if( ! games.has(data.gameId)) return;
+      var game = games.get(data.gameId);
+      game.decreasePlayerGear(data.playerId, data.givenPlayerId);
       broadcastPlayersList(game);
     });
     

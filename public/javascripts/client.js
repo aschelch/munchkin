@@ -16,21 +16,7 @@ var currentPlayerId = localStorage.getItem("playerId");
 
 function displayCard(card){
     var text = "";
-
-    text+= "<img src='images/deck/"+card.img+"' class='rounded card' style='width:100px;' title='"+card.name+"'/>";
-/*
-    switch (card.type) {
-        case "monster":
-            text += " (level: "+card.level+(card.successLevel?", "+card.successLevel+" level":"")+(card.successTreasures?", "+card.successTreasures+" treasures":"")+")";
-            break;
-        case "curse":
-            break;
-        case "item":
-            text += " ("+(card.bonus?"bonus: "+card.bonus+", ":"")+"price: "+card.price+"po)";
-        default:
-            break;
-    }
-*/
+    text+= "<img src='images/deck/"+card.img+"' class='rounded card' style='width:100px;' title='"+escape(card.name)+"'/>";
     return text;
 }
 
@@ -114,7 +100,7 @@ socket.on('player-list', function(datas) {
     players = datas;
     players.forEach(player => {
         
-        var playerLi = $("<li data-player-id='"+player.id+"'></li>").append(player.name + " "+ (player.id == currentPlayerId ? "(vous) ":"") + (player.socketId==null?'<span class="badge badge-secondary">offline</span>':"")+", level: <button class='btn btn-xs btn-primary decrease-level' type='button'>-</button> "+player.level+" <button class='btn btn-xs btn-primary increase-level' type='button'>+</button>, hand: "+player.hand.length+" cards");
+        var playerLi = $("<li data-player-id='"+player.id+"'></li>").append(player.name + " "+ (player.id == currentPlayerId ? "(vous) ":"") + (player.socketId==null?'<span class="badge badge-secondary">offline</span>':"")+", level: <button class='btn btn-xs btn-primary decrease-level' type='button'>-</button> "+player.level+" <button class='btn btn-xs btn-primary increase-level' type='button'>+</button> , gear: <button class='btn btn-xs btn-primary decrease-gear' type='button'>-</button> "+player.gear+" <button class='btn btn-xs btn-primary increase-gear' type='button'>+</button>, strength : "+(player.level+player.gear)+", hand: "+player.hand.length+" cards");
         playerLi.append("")
 
         if(player.id != currentPlayerId){
@@ -213,6 +199,21 @@ $(function () {
     })
     $(document).on('click', '.increase-level', function(){
         socket.emit('increase-level', {
+            'gameId' : gameId,
+            'playerId' : currentPlayerId,
+            'givenPlayerId' : $(this).parent().data('player-id')
+        });
+    })
+
+    $(document).on('click', '.decrease-gear', function(){
+        socket.emit('decrease-gear', {
+            'gameId' : gameId,
+            'playerId' : currentPlayerId,
+            'givenPlayerId' : $(this).parent().data('player-id')
+        });
+    })
+    $(document).on('click', '.increase-gear', function(){
+        socket.emit('increase-gear', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
             'givenPlayerId' : $(this).parent().data('player-id')

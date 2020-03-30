@@ -5,11 +5,13 @@ block content
   .row
     .col-8
 
-      h3#title Game #{game.name}
+      h3#title 
+        | Game #{game.name} 
+        small (#{game.id})
       p List of players : 
         ul#players
 
-      p Center :
+      p 
         button#open-door.btn.btn-primary Open the door
         span#door-card
       p  

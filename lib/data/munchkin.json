@@ -159,17 +159,17 @@
         {"type":"item", "img":"munchkin/masse-darmes-de-repartie-piquante.jpg", "name":"Masse d'armes de répartie piquante", "bonus":{"priest":4}, "price": 600, "hand": 1},     
         {"type":"other", "img":"munchkin/pillaaaaaage.jpg", "name": "Pillaaaaaage !"},
         {"type":"item", "img":"munchkin/boisson-energisante-eventee.jpg", "name":"Boisson énergisante éventée", "bonus":2, "price": 200, "usage": 1},       
-        {"type":"gual", "img":"munchkin/1000-piece-dor.jpg", "name":"1000 pièces d'or"},
+        {"type":"gual", "img":"munchkin/1000-pieces-dor.jpg", "name":"1000 pièces d'or"},
         {"type":"item", "img":"munchkin/bandana-de-gros-dur.jpg", "name":"Bandana de gros dur", "bonus":{"human":3}, "price": 400, "hat": 1},     
         {"type":"item", "img":"munchkin/casque-de-courage.jpg", "name":"Casque de courage", "bonus":1, "price": 200, "hat": 1},     
         {"type":"item", "img":"munchkin/genouilleres-perforantes.jpg", "name":"Genouillères perforantes", "bonus":1, "price": 200},     
-        {"type":"item", "img":"munchkin/potion-de-mauvaise-haleine.jpg", "name":"Potion de muavaise haleine", "bonus":2, "price": 100, "usage": 1},       
+        {"type":"item", "img":"munchkin/potion-de-mauvaise-haleine.jpg", "name":"Potion de mauvaise haleine", "bonus":2, "price": 100, "usage": 1},       
         {"type":"item", "img":"munchkin/arc-enrubanne.jpg", "name":"Arc enrubanné", "bonus":{"elf":4}, "price": 800, "hand": 2},     
         {"type":"item", "img":"munchkin/targe-dinconscience-suicidaire.jpg", "name":"Targe d'inconscience suicidaire", "bonus":2, "price": 400, "hand": 1},     
         {"type":"item", "img":"munchkin/baton-de-napalm.jpg", "name":"Bâton de napalm", "bonus":{"wizard":5}, "price": 800, "hand": 1},     
         {"type":"item", "img":"munchkin/lance-de-3,5m.jpg", "name":"Lance de 3,50m", "bonus":1, "price": 200, "hand": 2},   
         {"type":"item", "img":"munchkin/potion-de-bravoure-hysterique.jpg", "name":"Potion de bravoure hystérique", "bonus":2, "price": 100, "usage": 1},       
-        {"type":"item", "img":"munchkin/mur-instanté.jpg", "name":"Mur instantané", "price": 300, "usage": 1},       
+        {"type":"item", "img":"munchkin/mur-instantane.jpg", "name":"Mur instantané", "price": 300, "usage": 1},       
         {"type":"item", "img":"munchkin/potion-de-polly-morphie.jpg", "name":"Potion de polly-morphie", "price": 1300, "usage": 1}
     ]
 }

@@ -9,7 +9,6 @@ Munchkin is an online game of Munchkin card game
 * Play a curse on other player 
 * Play monster enhancement
 * Equip/desequip item
-* Add gear counter, modifier counter and total strength counter
 * Translate
 
 ## Installation
