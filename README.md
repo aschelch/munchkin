@@ -10,7 +10,7 @@ Munchkin is an online game of Munchkin card game
 * Play monster enhancement
 * Equip/desequip item
 * Add gear counter, modifier counter and total strength counter
-* Add history log ftgxws
+* Translate
 
 ## Installation
 

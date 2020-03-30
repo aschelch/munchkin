@@ -7,10 +7,51 @@ block content
     input(type="text", placeholder="username", id="username")
     | to #{title}
   p 
-    button#new-public-game.btn.btn-primary New public game    
+    button#new-public-game.btn.btn-primary(data-toggle="modal" data-target="#myModal") New public game    
     | 
     button#new-private-game.btn.btn-primary New private game  
     
-  p List of games : 
+  p List of public games : 
     ul#games
+
+
+  div(class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button(type="button" class="close fui-cross" data-dismiss="modal" aria-hidden="true")
+          h4.modal-title#myModalLabel New game
+        .modal-body
+          .form-group
+            input(id="game-name" placeholder="Game name" class="form-control")
+          .form-group
+              label(class="control-label") Add-ons (not available yet)
+              label(class="checkbox" for="munchkin-addon-2")
+                input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-2" required="" checked="" class="custom-checkbox")
+                span.icons
+                  span.icon-unchecked
+                  span.icon-checked
+                | Munchkin 2 - Hachement Mieux
+              label(class="checkbox" for="munchkin-addon-3")
+                input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-3" required="" class="custom-checkbox")
+                span.icons
+                  span.icon-unchecked
+                  span.icon-checked
+                | Munchkin 3 - Clerc et (pas) net
+              label(class="checkbox" for="munchkin-addon-4")
+                input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-4" required="" class="custom-checkbox")
+                span.icons
+                  span.icon-unchecked
+                  span.icon-checked
+                | Munchkin 4 - Ton destin est sellé !
+              label(class="checkbox" for="munchkin-addon-5")
+                input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-5" required="" class="custom-checkbox")
+                span.icons
+                  span.icon-unchecked
+                  span.icon-checked
+                | Munchkin 5 -On zeu rôde again
+
+        .modal-footer
+          button(type="button" class="btn btn-default" data-dismiss="modal") Close
+          button(type="button" class="btn btn-primary" id="create-public-game") Create game
 

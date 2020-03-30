@@ -170,8 +170,6 @@
         {"type":"item", "img":"munchkin/lance-de-3,5m.jpg", "name":"Lance de 3,50m", "bonus":1, "price": 200, "hand": 2},   
         {"type":"item", "img":"munchkin/potion-de-bravoure-hysterique.jpg", "name":"Potion de bravoure hystérique", "bonus":2, "price": 100, "usage": 1},       
         {"type":"item", "img":"munchkin/mur-instanté.jpg", "name":"Mur instantané", "price": 300, "usage": 1},       
-        {"type":"item", "img":"munchkin/potion-de-polly-morphie.jpg", "name":"Potion de polly-morphie", "price": 1300, "usage": 1},       
-  
-
+        {"type":"item", "img":"munchkin/potion-de-polly-morphie.jpg", "name":"Potion de polly-morphie", "price": 1300, "usage": 1}
     ]
 }

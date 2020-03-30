@@ -40,16 +40,19 @@ app.get('/', function(req, res, next) {
 app.get('/:id', function(req, res, next) {
   var gameId = req.params.id
 
+  var game;
   if( ! games.has(gameId)){
     //res.redirect('/')
     //return;
       //TODO For dev only
-      var game = new Game(gameId, 0)
+      game = new Game(gameId, 0, "Test")
       games.set(game.id, game);
       broadcastGameList();
   }
 
-  res.render('game', {gameId : gameId, title: 'Munchkin Online' });
+  game = games.get(gameId);
+
+  res.render('game', {game : game, title: 'Munchkin Online' });
 })
 
 // catch 404 and forward to error handler
@@ -83,6 +86,7 @@ function broadcastGameList(){
     }
     gameList.push({
       uid : game.id,
+      name : game.name,
       nbPlayers : game.players.size
     });
   }); 
@@ -103,15 +107,15 @@ io.on('connection', function(socket) {
 
     broadcastGameList();
   
-    socket.on('new-private-game', () => {
-      var game = Game.createPrivate();
+    socket.on('new-private-game', (data) => {
+      var game = Game.createPrivate(data);
       games.set(game.id, game);
       socket.emit('game-created', game.id);
       broadcastGameList();
     });
 
-    socket.on('new-public-game', () => {
-      var game = Game.createPublic();
+    socket.on('new-public-game', (data) => {
+      var game = Game.createPublic(data);
       games.set(game.id, game);
       socket.emit('game-created', game.id);
       broadcastGameList();
@@ -135,7 +139,6 @@ io.on('connection', function(socket) {
       var playerId = game.addPlayer(socket, data);
       
       socket.emit('game-joined', playerId);
-      broadcastPlayersList(game);
       broadcastGameList();
     });
 
@@ -258,10 +261,8 @@ io.on('connection', function(socket) {
         return;
       }
 
-      io.to(data.gameId).emit('dice-rolling');
-      setTimeout(function(){
-        io.to(data.gameId).emit('dice-rolled', Utils.rollDice(1, 6));
-      }, 1000);
+      var game = games.get(data.gameId);
+      game.rollDice(data.playerId);
     });
 
     

@@ -69,6 +69,13 @@ socket.on('door-opened', function(card){
     $("#door-card").html("Behind the door : " + displayCard(card));
 });
 
+socket.on('log', function(logs){
+    $("#logs").empty();
+    logs.forEach(function(log){
+        $("#logs").prepend("<li>" + log + "</li>");
+    });
+})
+
 // Update dice value
 socket.on('dice-rolled', function(value) {
     $("#roll-dice").text("Roll a dice : " + value);
@@ -102,6 +109,8 @@ socket.on('player-list', function(datas) {
     $(".give-hand-card").empty();
     $(".give-board-card").empty();
 
+    console.log(datas);
+
     players = datas;
     players.forEach(player => {
         
@@ -127,16 +136,38 @@ socket.on('player-list', function(datas) {
 socket.on('game-list', function(games) {
     $("#games").empty();
     games.forEach(game => {
-        $("#games").append("<li><a href='/" + game.uid + "'>" + game.uid + "</a>, " + game.nbPlayers + " players</li>");
+        $("#games").append("<li><a href='/" + game.uid + "'>" + game.name + "</a>, " + game.nbPlayers + " players</li>");
     });
 });
 
 $(function () {
-    $("#new-public-game").on("click", () => {
-        socket.emit('new-public-game', );
+    $("#create-public-game").on("click", () => {
+
+        var data = {
+            name: $("#game-name").val() || 'Unnamed game',
+            addon: {
+                "munchkin-addon-2" : $("#munchkin-addon-2").is(':checked'),
+                "munchkin-addon-3" : $("#munchkin-addon-3").is(':checked'),
+                "munchkin-addon-4" : $("#munchkin-addon-4").is(':checked'),
+                "munchkin-addon-5" : $("#munchkin-addon-5").is(':checked')
+            }
+        };
+        
+        socket.emit('new-public-game', data);
     });
     $("#new-private-game").on("click", () => {
-        socket.emit('new-private-game');
+
+        var data = {
+            name: 'Private game',
+            addon: {
+                "munchkin-addon-2" : false,
+                "munchkin-addon-3" : false,
+                "munchkin-addon-4" : false,
+                "munchkin-addon-5" : false
+            }
+        };
+        
+        socket.emit('new-private-game', data);
     });
 
     $("#open-door").on("click", () => {
@@ -217,4 +248,5 @@ $(function () {
     $("#username").on('change', function(){
         localStorage.setItem("username", $(this).val());
     });
+
 });
