@@ -1,3 +1,7 @@
+.container-fluid{
+  padding: 0 50px;
+}
+
 .card {
   transition: transform .2s; /* Animation */
   width: 150px;
