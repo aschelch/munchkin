@@ -1,8 +1,12 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.card {
+  transition: transform .2s; /* Animation */
+  width: 150px;
+}
+.card:hover {
+  transform: scale(3);
+  z-index:1000;
 }
 
-a {
-  color: #00B7FF;
+.card-item{
+  text-align: center;
 }

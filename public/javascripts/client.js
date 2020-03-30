@@ -15,8 +15,10 @@ var currentPlayerId = localStorage.getItem("playerId");
 
 
 function displayCard(card){
-    var text = card.name;
+    var text = "";
 
+    text+= "<img src='images/deck/"+card.img+"' class='rounded card' style='width:100px;' title='"+card.name+"'/>";
+/*
     switch (card.type) {
         case "monster":
             text += " (level: "+card.level+(card.successLevel?", "+card.successLevel+" level":"")+(card.successTreasures?", "+card.successTreasures+" treasures":"")+")";
@@ -28,7 +30,7 @@ function displayCard(card){
         default:
             break;
     }
-
+*/
     return text;
 }
 
@@ -64,7 +66,7 @@ socket.on('no-more-door-card', function(){
 });
 
 socket.on('door-opened', function(card){
-    $("#door-card").text("Behind the door : " + card.name + " (" + card.type + ")");
+    $("#door-card").html("Behind the door : " + displayCard(card));
 });
 
 // Update dice value
@@ -81,7 +83,7 @@ socket.on('hand-card-list', function(cards) {
     $("#hand").empty();
     cards.forEach(function(card, index){
         console.log(card);
-        $("#hand").append("<li>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs play-card' data-card-id='"+index+"'>play</button> <div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>give</button><ul class='dropdown-menu give-hand-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-hand-card' data-card-id='"+index+"'>discard</button></div></li>");
+        $("#hand").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs play-card' data-card-id='"+index+"'>play</button> <div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>give</button><ul class='dropdown-menu give-hand-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-hand-card' data-card-id='"+index+"'>discard</button></div></li>");
     });
 });
 
@@ -90,7 +92,7 @@ socket.on('hand-card-list', function(cards) {
 socket.on('board-card-list', function(cards) {
     $("#board").empty();
     cards.forEach(function(card, index){
-        $("#board").append("<li>" + displayCard(card) + " <div class='btn-group' role='group'><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>give</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>discard</button></div></li>");
+        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>give</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>discard</button></div></li>");
     });
 });
 
@@ -110,9 +112,9 @@ socket.on('player-list', function(datas) {
 
             $(".give-hand-card").append("<li><a href='#' data-player-id='"+player.id+"'>" + player.name + "</a></li>");
             $(".give-board-card").append("<li><a href='#' data-player-id='"+player.id+"'>" + player.name + "</a></li>");
-            var cardUl = $('<ul></ul>');
+            var cardUl = $('<ul class="list-inline"></ul>');
             player.board.forEach(card => {
-                cardUl.append("<li>" + card.toString() + "</li>");
+                cardUl.append("<li class='list-inline-item'>" + displayCard(card) + "</li>");
             });
             playerLi.append(cardUl);
         }
