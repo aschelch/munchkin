@@ -18,7 +18,11 @@
 
 .card-not-equiped{
   opacity: 50%;
-  //transform: rotate(90deg);
+}
+
+video{
+  width: 100%;
+  background-color: rgba(223, 223, 223, 0.431) ;
 }
 
 .card-item{
@@ -39,7 +43,7 @@
 .roomzone, .boardzone, .handzone{
   margin: 10px 0;
   padding : 10px;
-  background: lightgray;
+  background-color: rgba(223, 223, 223, 0.431) ;
 }
 
 .empty{

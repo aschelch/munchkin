@@ -6,6 +6,7 @@ var logger = require('morgan');
 var debug = require('debug')('munchkin:server');
 var http = require('http');
 var SocketIO = require('socket.io');
+var request = require('request');
 
 const Utils = require('./lib/Utils');
 const HashMap = require('hashmap');
@@ -116,13 +117,25 @@ io.on('connection', function(socket) {
 
     socket.on('new-public-game', (data) => {
       var game = Game.createPublic(data);
-      games.set(game.id, game);
-      socket.emit('game-created', game.id);
-      broadcastGameList();
+
+      request.post({
+        url: "https://api.eyeson.team/rooms",
+        headers: {'Authorization': 'zQi8trOgWGcxzo2esxggcz146hBN1hBPXNtgaMp5Rd'},
+        form: {
+          id: game.id,
+          name: game.name,
+          "user[name]": "Munchkin online"
+        }
+      }, function(error, response, body){
+        if(response.statusCode != 201) return;
+        game.eyeson = JSON.parse(body);
+
+        games.set(game.id, game);
+        socket.emit('game-created', game.id);
+        broadcastGameList();
+      });
+
     });
-
-
-
 
 
 
@@ -137,10 +150,28 @@ io.on('connection', function(socket) {
 
       var game = games.get(data.gameId);
       var playerId = game.addPlayer(socket, data);
-      
-      socket.emit('game-joined', playerId);
-      broadcastGameList();
+
+
+      request.post({
+        url: "https://api.eyeson.team/guests/"+game.eyeson.room.guest_token,
+        headers: {'Authorization': 'zQi8trOgWGcxzo2esxggcz146hBN1hBPXNtgaMp5Rd'},
+        form: {
+          id: playerId,
+          name: data.username
+        }
+      }, function(error, response, body){
+        if(response.statusCode != 201) return;
+        var json = JSON.parse(body);
+
+        socket.emit('game-joined', {
+          playerId: playerId,
+          access_token: json.access_key
+        });
+        broadcastGameList();
+      });
+
     });
+
 
     socket.on('take-door-card', (data) => {
       debug('Player take a door card '+data.gameId);

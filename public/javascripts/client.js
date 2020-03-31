@@ -22,7 +22,6 @@ function displayCard(card){
 
 
 socket.on('connect', function() {
-    console.log('Connected to server');
 
     if(gameId){
         socket.emit('join-game', {
@@ -38,9 +37,29 @@ socket.on('game-created', function(gameId){
     window.location.href = '/' + gameId;
 });
 
-socket.on('game-joined', function(playerId){
-    currentPlayerId = playerId;
-    localStorage.setItem("playerId", playerId);
+socket.on('game-joined', function(data){
+    currentPlayerId = data.playerId;
+    accessToken = data.access_token;
+    localStorage.setItem("playerId", currentPlayerId);
+
+
+    let video = document.querySelector('video');
+    if(video){
+        eyeson.default.onEvent(event => {
+            if (event.type !== 'accept') {
+                return;
+            }
+            video.srcObject = event.remoteStream;
+            video.play();
+        });
+        eyeson.default.start(accessToken);
+
+        window.addEventListener("beforeunload", function (event) {
+            eyeson.default.destroy();
+        });
+    }
+
+
 });
 
 socket.on('no-more-treasure-card', function(){
