@@ -116,24 +116,36 @@ socket.on('board-card-list', function(cards) {
 // Update player list
 socket.on('player-list', function(datas) {
     $("#players").empty();
+    $("#players-boards").empty();
     $(".give-hand-card").empty();
     $(".give-board-card").empty();
 
     players = datas;
     players.forEach(player => {
         
-        var playerLi = $("<li data-player-id='"+player.id+"'></li>").append(player.name + " "+ (player.id == currentPlayerId ? "(vous) ":"") + (player.socketId==null?'<span class="badge badge-secondary">offline</span>':"")+", level: <button class='btn btn-xs btn-primary decrease-level' type='button'>-</button> "+player.level+" <button class='btn btn-xs btn-primary increase-level' type='button'>+</button> , gear: <button class='btn btn-xs btn-primary decrease-gear' type='button'>-</button> "+player.gear+" <button class='btn btn-xs btn-primary increase-gear' type='button'>+</button>, strength : "+(player.level+player.gear)+", hand: "+player.hand.length+" cards");
-        playerLi.append("")
+        var playerLi = $("<li data-player-id='"+player.id+"'></li>").append("<span class='name'>"+player.name + " "+ (player.id == currentPlayerId ? "(vous) ":"")+"</span> " + (player.socketId==null?'<span class="badge badge-secondary">offline</span>':""));
+
+        var infosUL = $('<ul class="list-inline infos"></ul>');
+        infosUL.append("<li class='list-inline-item'>Niveau: <button class='btn btn-xs btn-primary decrease-level' type='button'>-</button> "+player.level+" <button class='btn btn-xs btn-primary increase-level' type='button'>+</button></li>");
+        infosUL.append("<li class='list-inline-item'>Equipement: <button class='btn btn-xs btn-primary decrease-gear' type='button'>-</button> "+player.gear+" <button class='btn btn-xs btn-primary increase-gear' type='button'>+</button></li>");
+        infosUL.append("<li class='list-inline-item'><strong>Force : "+(player.level+player.gear)+"</strong></li>");
+        infosUL.append("<li class='list-inline-item'>Main: "+player.hand.length+" cartes</li>");
+        playerLi.append(infosUL);
 
         if(player.id != currentPlayerId){
 
             $(".give-hand-card").append("<li><a href='#' data-player-id='"+player.id+"'>" + player.name + "</a></li>");
             $(".give-board-card").append("<li><a href='#' data-player-id='"+player.id+"'>" + player.name + "</a></li>");
+
+            var playerBoard = $("<div class='boardzone'></div>").append("<h6>"+player.name +" (Niveau "+player.level +") <small>Son équipement</small></h6> " + (player.socketId==null?'<span class="badge badge-secondary">offline</span>':""));
+
             var cardUl = $('<ul class="list-inline"></ul>');
             player.board.forEach(card => {
                 cardUl.append("<li class='list-inline-item'>" + displayCard(card) + "</li>");
             });
-            playerLi.append(cardUl);
+            playerBoard.append(cardUl);
+
+            $("#players-boards").append(playerBoard);
         }
 
         $("#players").append(playerLi);
@@ -222,14 +234,14 @@ $(function () {
         socket.emit('decrease-level', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
-            'givenPlayerId' : $(this).parent().data('player-id')
+            'givenPlayerId' : $(this).parent().parent().parent().data('player-id')
         });
     })
     $(document).on('click', '.increase-level', function(){
         socket.emit('increase-level', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
-            'givenPlayerId' : $(this).parent().data('player-id')
+            'givenPlayerId' : $(this).parent().parent().parent().data('player-id')
         });
     })
 
@@ -237,14 +249,14 @@ $(function () {
         socket.emit('decrease-gear', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
-            'givenPlayerId' : $(this).parent().data('player-id')
+            'givenPlayerId' : $(this).parent().parent().parent().data('player-id')
         });
     })
     $(document).on('click', '.increase-gear', function(){
         socket.emit('increase-gear', {
             'gameId' : gameId,
             'playerId' : currentPlayerId,
-            'givenPlayerId' : $(this).parent().data('player-id')
+            'givenPlayerId' : $(this).parent().parent().parent().data('player-id')
         });
     })
 

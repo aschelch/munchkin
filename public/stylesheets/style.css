@@ -36,8 +36,25 @@ video{
   font-size: 0.8em;
 }
 
-#logs li:nth-of-type(odd){
+#players>li{
+  padding: 5px;
+}
+
+#players .infos{
+  font-size: 0.8em;
+}
+
+#players .name{
+  font-weight: bold;
+}
+
+#logs li:nth-of-type(odd), #players>li:nth-of-type(odd){
   background-color: rgba(223, 223, 223, 0.431) ;
+  
+}
+
+.boardzone ul{
+  margin: 0;
 }
 
 .roomzone, .boardzone, .handzone{
@@ -50,3 +67,12 @@ video{
   font-size: 0.8em;
   color:grey;
 }
+
+h6{
+  margin-top: 0;
+  font-size: 20px;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small{
+  color: #c5c8cb;
+}h

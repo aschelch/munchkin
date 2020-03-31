@@ -5,12 +5,10 @@ block content
   .row
     .col-9
 
-      h3#title 
+      h6#title 
         | Partie #{game.name} 
         small (#{game.id})
-      .playerzone
-        p Joueurs : 
-          ul#players
+      #players-boards
 
       .roomzone
         h6 La pièce
@@ -38,7 +36,12 @@ block content
         p.empty#hand-empty Vous n'avez aucune carte en main
 
     .col-3
+    
+      h6 Video conf
+      video
+
+      h6 Personnages
+      ul#players.list-unstyled
+
       h6 Evènements
       ul#logs.list-unstyled
-
-      video

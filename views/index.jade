@@ -3,15 +3,15 @@ extends layout
 block content
   h2= title
   p
-    | Welcome 
+    | Bienvenue  
     input(type="text", placeholder="username", id="username")
-    | to #{title}
+    | sur #{title}
   p 
-    button#new-public-game.btn.btn-primary(data-toggle="modal" data-target="#myModal") New public game    
+    button#new-public-game.btn.btn-primary(data-toggle="modal" data-target="#myModal") Nouvelle partie    
     | 
-    button#new-private-game.btn.btn-primary New private game  
+    button#new-private-game.btn.btn-primary Nouvelle partie privée
     
-  p List of public games : 
+  p Liste des parties publiques :
     ul#games
 
 
@@ -20,24 +20,24 @@ block content
       .modal-content
         .modal-header
           button(type="button" class="close fui-cross" data-dismiss="modal" aria-hidden="true")
-          h4.modal-title#myModalLabel New game
+          h4.modal-title#myModalLabel Nouvelle partie
         .modal-body
           .form-group
-            input(id="game-name" placeholder="Game name" class="form-control")
+            input(id="game-name" placeholder="Nom de la partie" class="form-control")
           .form-group
-              label(class="control-label") Add-ons
+              label(class="control-label") Extensions
               label(class="checkbox" for="munchkin-addon-2")
-                input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-2" disabled="" required="" checked="" class="custom-checkbox")
+                input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-2" disabled="" required="" class="custom-checkbox")
                 span.icons
                   span.icon-unchecked
                   span.icon-checked
-                | Munchkin 2 - Hachement Mieux (not available yet)
+                | Munchkin 2 - Hachement Mieux (bientôt disponbile)
               label(class="checkbox" for="munchkin-addon-3")
                 input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-3" disabled="" required="" class="custom-checkbox")
                 span.icons
                   span.icon-unchecked
                   span.icon-checked
-                | Munchkin 3 - Clerc et (pas) net (not available yet)
+                | Munchkin 3 - Clerc et (pas) net (bientôt disponbile)
               label(class="checkbox" for="munchkin-addon-4")
                 input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-4" required="" class="custom-checkbox")
                 span.icons
@@ -49,9 +49,16 @@ block content
                 span.icons
                   span.icon-unchecked
                   span.icon-checked
-                | Munchkin 5 -On zeu rôde again (not available yet)
+                | Munchkin 5 -On zeu rôde again (bientôt disponbile)
+              label(class="control-label") Paramètres
+              label(class="checkbox" for="video-conf-enabled")
+                input(type="checkbox" data-toggle="checkbox" value="" id="video-conf-enabled" disabled="" required="" checked="" class="custom-checkbox")
+                span.icons
+                  span.icon-unchecked
+                  span.icon-checked
+                | Activer la conférence vidéo
 
         .modal-footer
-          button(type="button" class="btn btn-default" data-dismiss="modal") Close
-          button(type="button" class="btn btn-primary" id="create-public-game") Create game
+          button(type="button" class="btn btn-default" data-dismiss="modal") Fermer
+          button(type="button" class="btn btn-primary" id="create-public-game") Créer la partie
 
