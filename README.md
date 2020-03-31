@@ -28,6 +28,11 @@ npm start
 
 Open your browser to http://localhost:3000
 
+## Add an addon
+
+1. Add list of all card in `lib/data/{addon-name}.json`
+2. Add all card pictures in `public/images/deck/{addon-name}/`
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
