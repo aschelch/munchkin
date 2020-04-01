@@ -43,16 +43,15 @@ app.get('/:id', function(req, res, next) {
 
   var game;
   if( ! games.has(gameId)){
-    //res.redirect('/')
-    //return;
+    res.redirect('/')
+    return;
       //TODO For dev only
-      game = new Game(gameId, 0, "Test")
-      games.set(game.id, game);
-      broadcastGameList();
+      //game = new Game(gameId, 0, "Test")
+      //games.set(game.id, game);
+      //broadcastGameList();
   }
 
   game = games.get(gameId);
-
   res.render('game', {game : game, title: 'Munchkin' });
 })
 
@@ -109,9 +108,6 @@ const io = SocketIO(server);
 io.on('connection', function(socket) {
     debug('New socket connected : ' + socket.id)
 
-
-
-
     broadcastGameList();
   
     socket.on('new-private-game', (data) => {
@@ -123,6 +119,13 @@ io.on('connection', function(socket) {
 
     socket.on('new-public-game', (data) => {
       var game = Game.createPublic(data);
+
+      if( ! game.useVisio){
+        games.set(game.id, game);
+        socket.emit('game-created', game.id);
+        broadcastGameList();
+        return;
+      }
 
       request.post({
         url: "https://api.eyeson.team/rooms",
@@ -157,6 +160,13 @@ io.on('connection', function(socket) {
       var game = games.get(data.gameId);
       var playerId = game.addPlayer(socket, data);
 
+      if( ! game.useVisio){
+        socket.emit('game-joined', {
+          playerId: playerId
+        });
+        broadcastGameList();
+        return;
+      }
 
       request.post({
         url: "https://api.eyeson.team/guests/"+game.eyeson.room.guest_token,

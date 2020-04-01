@@ -1,3 +1,6 @@
+
+$(function () {
+
 var socket = io.connect();
 
 if( ! localStorage.getItem("username")){
@@ -20,9 +23,7 @@ function displayCard(card){
     return text;
 }
 
-
 socket.on('connect', function() {
-
     if(gameId){
         socket.emit('join-game', {
             'gameId' : gameId,
@@ -30,7 +31,6 @@ socket.on('connect', function() {
             'playerId' : currentPlayerId,
         });
     }
-    
 });
 
 socket.on('game-created', function(gameId){
@@ -39,27 +39,29 @@ socket.on('game-created', function(gameId){
 
 socket.on('game-joined', function(data){
     currentPlayerId = data.playerId;
-    accessToken = data.access_token;
     localStorage.setItem("playerId", currentPlayerId);
 
+    if(data.access_token){
+        $("#visio").show();
+        accessToken = data.access_token;
+        let video = document.querySelector('video');
+        if(video){
+            eyeson.default.onEvent(event => {
+                if (event.type !== 'accept') {
+                    return;
+                }
+                video.srcObject = event.remoteStream;
+                video.play();
+            });
+            eyeson.default.start(accessToken);
 
-    let video = document.querySelector('video');
-    if(video){
-        eyeson.default.onEvent(event => {
-            if (event.type !== 'accept') {
-                return;
-            }
-            video.srcObject = event.remoteStream;
-            video.play();
-        });
-        eyeson.default.start(accessToken);
-
-        window.addEventListener("beforeunload", function (event) {
-            eyeson.default.destroy();
-        });
+            window.addEventListener("beforeunload", function (event) {
+                eyeson.default.destroy();
+            });
+        }
+    }else{
+        $("#visio").hide();
     }
-
-
 });
 
 socket.on('no-more-treasure-card', function(){
@@ -99,7 +101,7 @@ socket.on('hand-card-list', function(cards) {
     $("#hand").empty();
     $('#hand-empty').toggle(cards.length == 0);
     cards.forEach(function(card, index){
-        $("#hand").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs play-card' data-card-id='"+index+"'>poser</button> <div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-hand-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-hand-card' data-card-id='"+index+"'>défausser</button></div></li>");
+        $("#hand").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <button class='btn btn-block btn-primary btn-xs play-card' data-card-id='"+index+"'>poser</button><div class='btn-group btn-block'><button class='btn btn-xs btn-block btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-hand-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-block btn-danger btn-xs discard-hand-card' data-card-id='"+index+"'>défausser</button></li>");
     });
 });
 
@@ -109,17 +111,19 @@ socket.on('board-card-list', function(cards) {
     $("#board").empty();
     $('#board-empty').toggle(cards.length == 0);
     cards.forEach(function(card, index){
-        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <div class='btn-group' role='group'><button class='btn btn-primary btn-xs "+(card.equiped?"unequip":"equip")+"-board-card' data-card-id='"+index+"'>"+(card.equiped?"déséquiper":"équiper")+"</button><div class='btn-group'><button class='btn btn-xs btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-xs discard-board-card' data-card-id='"+index+"'>défausser</button></div></li>");
+        $("#board").append("<li class='list-inline-item card-item'>" + displayCard(card) + " <button class='btn btn-block  btn-primary btn-xs "+(card.equiped?"unequip":"equip")+"-board-card' data-card-id='"+index+"'>"+(card.equiped?"déséquiper":"équiper")+"</button><div class='btn-group btn-block '><button class='btn btn-xs btn-block btn-primary dropdown-toggle' type='button' data-toggle='dropdown'>donner</button><ul class='dropdown-menu give-board-card' data-card-id='"+index+"' role='menu'></ul></div><button class='btn btn-danger btn-block btn-xs discard-board-card' data-card-id='"+index+"'>défausser</button></li>");
     });
 });
 
 // Update player list
 socket.on('player-list', function(datas) {
     $("#players").empty();
-    $("#players-boards").empty();
+    $("#players-boards .tabbable .nav-tabs").empty();
+    $("#players-boards .tabbable .tab-content").empty();
     $(".give-hand-card").empty();
     $(".give-board-card").empty();
 
+    var firstPlayerNotCurrent = false;
     players = datas;
     players.forEach(player => {
         
@@ -137,19 +141,24 @@ socket.on('player-list', function(datas) {
             $(".give-hand-card").append("<li><a href='#' data-player-id='"+player.id+"'>" + player.name + "</a></li>");
             $(".give-board-card").append("<li><a href='#' data-player-id='"+player.id+"'>" + player.name + "</a></li>");
 
-            var playerBoard = $("<div class='boardzone'></div>").append("<h6>"+player.name +" (Niveau "+player.level +") <small>Son équipement</small></h6> " + (player.socketId==null?'<span class="badge badge-secondary">offline</span>':""));
-
-            var cardUl = $('<ul class="list-inline"></ul>');
+            var cardUl = $('<ul class="list-inline tab-pane" id="'+player.id+'"></ul>');
             player.board.forEach(card => {
                 cardUl.append("<li class='list-inline-item'>" + displayCard(card) + "</li>");
             });
-            playerBoard.append(cardUl);
 
-            $("#players-boards").append(playerBoard);
+            $("#players-boards .tabbable .nav-tabs").append("<li><a href='#"+player.id+"' id='tab-"+player.id+"'class=''>"+player.name +" (Niveau "+player.level +")</a></li>");
+            $("#players-boards .tabbable .tab-content").append(cardUl);
+
+            firstPlayerNotCurrent = firstPlayerNotCurrent || player.id;
         }
 
         $("#players").append(playerLi);
+
     });
+
+    if(firstPlayerNotCurrent){
+        $("#tab-"+firstPlayerNotCurrent).tab('show');
+    }
 });
 
 function displayPlayerList(game){
@@ -165,7 +174,6 @@ socket.on('game-list', function(games) {
     });
 });
 
-$(function () {
     $("#create-public-game").on("click", () => {
 
         var data = {
@@ -175,7 +183,8 @@ $(function () {
                 "munchkin-addon-3" : $("#munchkin-addon-3").is(':checked'),
                 "munchkin-addon-4" : $("#munchkin-addon-4").is(':checked'),
                 "munchkin-addon-5" : $("#munchkin-addon-5").is(':checked')
-            }
+            },
+            useVisio: $('#video-conf-enabled').is(':checked')
         };
         
         socket.emit('new-public-game', data);
@@ -189,7 +198,8 @@ $(function () {
                 "munchkin-addon-3" : false,
                 "munchkin-addon-4" : false,
                 "munchkin-addon-5" : false
-            }
+            },
+            useVisio: false
         };
         
         socket.emit('new-private-game', data);
@@ -318,6 +328,11 @@ $(function () {
     $("#username").val(localStorage.getItem("username"));
     $("#username").on('change', function(){
         localStorage.setItem("username", $(this).val());
+    });
+
+    $(document ).on("click", '.nav-tabs a', function(e){
+        e.preventDefault();
+        $(this).tab('show');
     });
 
 });

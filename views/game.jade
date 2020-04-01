@@ -9,9 +9,16 @@ block content
           | Partie #{game.name} 
           small (#{game.id})
         #players-boards
+          .tabbable
+            ul.nav.nav-tabs.nav-append-content
+              li <a href="#tab4" class="active show">Popular</a>
+            .tab-content
+              div(class="tab-pane active show" id="tab4")
+                p I'm in Section 1
+
 
         .roomzone
-          h6 La pièce
+          h6 Le donjon
           p 
             button#open-door.btn.btn-primary Ouvrir la porte
             | 
@@ -37,8 +44,9 @@ block content
 
       .col-3
       
-        h6 Video conf
-        video
+        #visio
+          h6 Video conf
+          video
 
         h6 Personnages
         ul#players.list-unstyled
