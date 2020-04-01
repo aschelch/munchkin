@@ -8,6 +8,10 @@ body{
   color: white;
 }
 
+.modal{
+  color:#34495e;
+}
+
 .bottom-menu{
   position: fixed;
   left: 0;
