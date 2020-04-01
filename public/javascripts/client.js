@@ -170,7 +170,7 @@ socket.on('game-list', function(games) {
     var tbody = $("#games table tbody");
     tbody.empty();
     games.forEach(game => {
-        tbody.append("<tr><td><a href='/" + game.uid + "'>" + game.name + "</a></td><td>" + displayPlayerList(game) + "</td><td>Aucune</td><td><a class='btn btn-primary btn-xs' href='/" + game.uid + "'>Rejoidre</a></td></tr>");
+        tbody.append("<tr><td><strong>" + game.name + "</strong></td><td>" + displayPlayerList(game) + "</td><td>Aucune</td><td><a class='btn btn-primary btn-xs' href='/" + game.uid + "'>Rejoidre</a></td></tr>");
     });
 });
 
