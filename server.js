@@ -129,7 +129,7 @@ io.on('connection', function(socket) {
 
       request.post({
         url: "https://api.eyeson.team/rooms",
-        headers: {'Authorization': 'zQi8trOgWGcxzo2esxggcz146hBN1hBPXNtgaMp5Rd'},
+        headers: {'Authorization': process.env.EYESON_API_KEY},
         form: {
           id: game.id,
           name: game.name,
@@ -170,7 +170,7 @@ io.on('connection', function(socket) {
 
       request.post({
         url: "https://api.eyeson.team/guests/"+game.eyeson.room.guest_token,
-        headers: {'Authorization': 'zQi8trOgWGcxzo2esxggcz146hBN1hBPXNtgaMp5Rd'},
+        headers: {'Authorization': process.env.EYESON_API_KEY},
         form: {
           id: playerId,
           name: data.username
