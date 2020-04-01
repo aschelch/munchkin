@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res, next) {
-  res.render('index', { title: 'Munchkin Online' });
+  res.render('index', { title: 'Munchkin' });
 });
 
 app.get('/:id', function(req, res, next) {
@@ -53,7 +53,7 @@ app.get('/:id', function(req, res, next) {
 
   game = games.get(gameId);
 
-  res.render('game', {game : game, title: 'Munchkin Online' });
+  res.render('game', {game : game, title: 'Munchkin' });
 })
 
 // catch 404 and forward to error handler
@@ -85,10 +85,16 @@ function broadcastGameList(){
     if(game.isPrivate()){
        return;
     }
+
+    var players = [];
+    game.players.forEach(player => {
+      players.push(player.username);
+    });
+
     gameList.push({
       uid : game.id,
       name : game.name,
-      nbPlayers : game.players.size
+      players : players
     });
   }); 
   io.sockets.emit('game-list', gameList);

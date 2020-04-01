@@ -1,47 +1,47 @@
 extends layout
 
 block content
+  .container-fluid
+    .row
+      .col-9
 
-  .row
-    .col-9
+        h6#title 
+          | Partie #{game.name} 
+          small (#{game.id})
+        #players-boards
 
-      h6#title 
-        | Partie #{game.name} 
-        small (#{game.id})
-      #players-boards
+        .roomzone
+          h6 La pièce
+          p 
+            button#open-door.btn.btn-primary Ouvrir la porte
+            | 
+            button#take-open-door.btn.btn-primary Prendre la carte
+            | 
+            span#door-card
+          p  
+            button#take-door-card.btn.btn-primary Piocher une carte <strong>Donjon</strong> 
+            | 
+            button#take-treasure-card.btn.btn-primary Piocher une carte <strong>Trésor</strong>   
+            | 
+            button#roll-dice.btn.btn-primary Lancer un dé 
 
-      .roomzone
-        h6 La pièce
-        p 
-          button#open-door.btn.btn-primary Ouvrir la porte
-          | 
-          button#take-open-door.btn.btn-primary Prendre la carte
-          | 
-          span#door-card
-        p  
-          button#take-door-card.btn.btn-primary Piocher une carte <strong>Donjon</strong> 
-          | 
-          button#take-treasure-card.btn.btn-primary Piocher une carte <strong>Trésor</strong>   
-          | 
-          button#roll-dice.btn.btn-primary Lancer un dé 
+        .boardzone
+          h6 Votre équipement 
+          ul#board.list-inline
+          p.empty#board-empty Vous n'avez aucun équipement
 
-      .boardzone
-        h6 Votre équipement 
-        ul#board.list-inline
-        p.empty#board-empty Vous n'avez aucun équipement
+        .handzone
+          h6 Votre main
+          ul#hand.list-inline
+          p.empty#hand-empty Vous n'avez aucune carte en main
 
-      .handzone
-        h6 Votre main
-        ul#hand.list-inline
-        p.empty#hand-empty Vous n'avez aucune carte en main
+      .col-3
+      
+        h6 Video conf
+        video
 
-    .col-3
-    
-      h6 Video conf
-      video
+        h6 Personnages
+        ul#players.list-unstyled
 
-      h6 Personnages
-      ul#players.list-unstyled
-
-      h6 Evènements
-      ul#logs.list-unstyled
+        h6 Evènements
+        ul#logs.list-unstyled

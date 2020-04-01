@@ -2,6 +2,25 @@
   padding: 0 50px;
 }
 
+.headline {
+  padding: 50px 0 50px;
+  text-align: center;
+}
+
+.headline small {
+  color: rgba(52, 73, 94, 0.3);
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0;
+  padding-top: 5px;
+}
+
+#games{
+  min-height: 200px;
+  margin-bottom: 50px;
+}
+
 .card {
   transition: transform .2s; /* Animation */
   width: 100px;

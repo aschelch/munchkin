@@ -152,11 +152,16 @@ socket.on('player-list', function(datas) {
     });
 });
 
+function displayPlayerList(game){
+    return game.players.join(', ');
+}
+
 // Update game list
 socket.on('game-list', function(games) {
-    $("#games").empty();
+    var tbody = $("#games table tbody");
+    tbody.empty();
     games.forEach(game => {
-        $("#games").append("<li><a href='/" + game.uid + "'>" + game.name + "</a>, " + game.nbPlayers + " players</li>");
+        tbody.append("<tr><td><a href='/" + game.uid + "'>" + game.name + "</a></td><td>" + displayPlayerList(game) + "</td><td>Aucune</td><td><a class='btn btn-primary btn-xs' href='/" + game.uid + "'>Rejoidre</a></td></tr>");
     });
 });
 
