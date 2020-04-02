@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res, next) {
-  res.render('index', { title: 'Munchkin' });
+  res.render('index', { title: 'Munchkin Web' });
 });
 
 app.get('/:id', function(req, res, next) {
@@ -52,7 +52,7 @@ app.get('/:id', function(req, res, next) {
   }
 
   game = games.get(gameId);
-  res.render('game', {game : game, title: 'Munchkin' });
+  res.render('game', {game : game, title: 'Munchkin Web' });
 })
 
 // catch 404 and forward to error handler
@@ -133,7 +133,7 @@ io.on('connection', function(socket) {
         form: {
           id: game.id,
           name: game.name,
-          "user[name]": "Munchkin online"
+          "user[name]": "Munchkin Web"
         }
       }, function(error, response, body){
         if(response.statusCode != 201) return;
