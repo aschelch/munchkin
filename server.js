@@ -7,6 +7,7 @@ var debug = require('debug')('munchkin:server');
 var http = require('http');
 var SocketIO = require('socket.io');
 var request = require('request');
+var i18n = require("i18n");
 
 const Utils = require('./lib/Utils');
 const HashMap = require('hashmap');
@@ -23,6 +24,13 @@ var http = require('http');
 var port = Utils.normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+i18n.configure({
+  locales: ['en', 'fr'],
+  defaultLocale: 'fr',
+  queryParameter: 'lang',
+  cookie: 'munchkin-web',
+  directory: __dirname+'/locales'
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +40,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(i18n.init);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res, next) {

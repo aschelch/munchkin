@@ -1,4 +1,5 @@
 {
+    "name": "Munchkin",
     "doors": [
         {"type":"class", "img":"munchkin/guerrier.jpg", "name": "Guerrier"},
         {"type":"class", "img":"munchkin/guerrier2.jpg", "name": "Guerrier"},

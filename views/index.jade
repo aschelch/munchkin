@@ -7,27 +7,34 @@ block content
     .headline
       h1 
         =title
-        small Tuez les monstres, trahissez vos amis ! Ou l'inverse.
+        small #{__("Tuez les monstres, trahissez vos amis ! Ou l'inverse.")}
 
     p 
-      i <strong>Munchkin Web</strong> est un portage non-officiel du jeu de carte <a href="https://munchkin.game/">Munchkin</a> créé par <a href="http://www.sjgames.com/">Steve Jackson</a> et édité par <a href="http://www.edgeent.fr/jeux/collection/munchkin">Edge Entertainment</a> pour jouer en ligne avec vos amis pendant le confinement. 
+      i 
+        != __('<strong>Munchkin Web</strong> est un portage non-officiel du jeu de carte <a href="https://munchkin.game/">Munchkin</a> créé par <a href="http://www.sjgames.com/">Steve Jackson</a> et édité par <a href="http://www.edgeent.fr/jeux/collection/munchkin">Edge Entertainment</a> pour jouer en ligne avec vos amis pendant le confinement.')
 
     p.form-inline
-      | Nom de votre personnage&nbsp; 
+      = __('Nom de votre personnage')
+      | &nbsp;
       input(type="text", placeholder="username", id="username", class="form-control")
 
     
     p 
-      button#new-public-game.btn.btn-primary(data-toggle="modal" data-target="#new-game-modal") Lancer une nouvelle partie
-      |&nbsp;ou rejoindre une partie :
+      button#new-public-game.btn.btn-primary(data-toggle="modal" data-target="#new-game-modal") 
+        = __('Lancer une nouvelle partie') 
+      | &nbsp;
+      = __('ou rejoindre une partie :')
 
     #games
       table.table.table-striped
         thead
           tr
-            th Nom de la partie
-            th Joueurs
-            th Extensions
+            th 
+              = __("Nom de la partie")
+            th 
+              = __("Joueurs")
+            th 
+              = __("Extensions")
             th 
         tbody
 
@@ -36,47 +43,47 @@ block content
         .modal-content
           .modal-header
             button(type="button" class="close fui-cross" data-dismiss="modal" aria-hidden="true")
-            h4.modal-title#myModalLabel Nouvelle partie
+            h4.modal-title#myModalLabel #{__("Nouvelle partie")}
           .modal-body
             .form-group
-              input(id="game-name" placeholder="Nom de la partie" class="form-control")
+              input(id="game-name" placeholder="#{__('Nom de la partie')}" class="form-control")
             .form-group
-                label(class="control-label") Extensions
+                label(class="control-label") #{__("Extensions")}
                 label(class="checkbox" for="munchkin-addon-2")
                   input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-2" disabled="" required="" class="custom-checkbox")
                   span.icons
                     span.icon-unchecked
                     span.icon-checked
-                  | Munchkin 2 - Hachement Mieux (bientôt disponbile)
+                  = __("Munchkin 2 - Hachement Mieux (bientôt disponbile)")
                 label(class="checkbox" for="munchkin-addon-3")
                   input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-3" disabled="" required="" class="custom-checkbox")
                   span.icons
                     span.icon-unchecked
                     span.icon-checked
-                  | Munchkin 3 - Clerc et (pas) net (bientôt disponbile)
+                  = __("Munchkin 3 - Clerc et (pas) net (bientôt disponbile)")
                 label(class="checkbox" for="munchkin-addon-4")
                   input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-4" required="" class="custom-checkbox")
                   span.icons
                     span.icon-unchecked
                     span.icon-checked
-                  | Munchkin 4 - Ton destin est sellé !
+                  = __("Munchkin 4 - Ton destin est sellé !")
                 label(class="checkbox" for="munchkin-addon-5")
                   input(type="checkbox" data-toggle="checkbox" value="" id="munchkin-addon-5" disabled="" required="" class="custom-checkbox")
                   span.icons
                     span.icon-unchecked
                     span.icon-checked
-                  | Munchkin 5 - On zeu rôde again (bientôt disponbile)
-                label(class="control-label") Paramètres
+                  = __("Munchkin 5 - On zeu rôde again (bientôt disponbile)")
+                label(class="control-label") #{__("Paramètres")}
                 label(class="checkbox" for="video-conf-enabled")
                   input(type="checkbox" data-toggle="checkbox" value="" id="video-conf-enabled" required="" checked="" class="custom-checkbox")
                   span.icons
                     span.icon-unchecked
                     span.icon-checked
-                  | Activer la conférence vidéo
+                  = __("Activer la conférence vidéo")
 
           .modal-footer
-            button(type="button" class="btn btn-default" data-dismiss="modal") Fermer
-            button(type="button" class="btn btn-primary" id="create-public-game") Créer la partie
+            button(type="button" class="btn btn-default" data-dismiss="modal") #{__("Fermer")}
+            button(type="button" class="btn btn-primary" id="create-public-game") #{__("Créer la partie")}
 
 
 block footer
@@ -87,11 +94,13 @@ block footer
           a(href="/" class="bottom-menu-brand") Munchkin Web
         .col-md-7.col-sm-7
           ul(class="bottom-menu-list")
-            li <a href="https://twitter.com/aschelch">Fait avec&nbsp;<i class="fui-heart"></i> par <strong>aschelch</strong></a>
-            li <a href="http://www.edgeent.fr/jeux/collection/munchkin">Acheter le jeu</a>
-            li <a href="https://unsplash.com/photos/J2gEgTPM_OA" title="Photo by Nathan Dumlao on Unsplash">Photo by <strong>Nathan Dumlao</strong></a>
+            li <a href="https://twitter.com/aschelch">!{__('Fait avec&nbsp;<i class="fui-heart"></i> par <strong>%s</strong>', 'aschelch')}</a>
+            li <a href="http://www.edgeent.fr/jeux/collection/munchkin">#{__("Acheter le jeu")}</a>
+            li <a href="https://unsplash.com/photos/J2gEgTPM_OA" title="Photo by Nathan Dumlao on Unsplash">!{__('Photo de <strong>%s</strong>', 'Nathan Dumlao')}</a>
             
         .col-md-2.col-sm-2
           ul(class="bottom-menu-iconic-list")
+            li <a href="?lang=fr">fr</a>
+            li <a href="?lang=en">en</a>
             li <a href="https://github.com/aschelch/munchkin" class="fui-github"></a>
             li <a href="https://twitter.com/aschelch" class="fui-twitter"></a>

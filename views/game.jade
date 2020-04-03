@@ -6,7 +6,7 @@ block content
       .col-9
 
         h6#title 
-          | Partie #{game.name} 
+          | #{game.name} 
           small (#{game.id})
         #players-boards
           .tabbable
@@ -15,38 +15,38 @@ block content
 
 
         .roomzone
-          h6 Le donjon
+          h6 #{__("Le donjon")}
           p 
-            button#open-door.btn.btn-primary Ouvrir la porte
+            button#open-door.btn.btn-primary #{__("Ouvrir la porte")}
             | 
-            button#take-open-door.btn.btn-primary Prendre la carte
+            button#take-open-door.btn.btn-primary #{__("Prendre la carte")}
             | 
             span#door-card
           p  
-            button#take-door-card.btn.btn-primary Piocher une carte <strong>Donjon</strong> 
+            button#take-door-card.btn.btn-primary !{__("Piocher une carte <strong>Donjon</strong>")} 
             | 
-            button#take-treasure-card.btn.btn-primary Piocher une carte <strong>Trésor</strong>   
+            button#take-treasure-card.btn.btn-primary !{__("Piocher une carte <strong>Trésor</strong>")}
             | 
-            button#roll-dice.btn.btn-primary Lancer un dé 
+            button#roll-dice.btn.btn-primary #{__("Lancer un dé")}
 
         .boardzone
-          h6 Votre équipement 
+          h6 #{__("Votre équipement")}
           ul#board.list-inline
-          p.empty#board-empty Vous n'avez aucun équipement
+          p.empty#board-empty #{__("Vous n'avez aucun équipement")}
 
         .handzone
-          h6 Votre main
+          h6 #{__("Votre main")}
           ul#hand.list-inline
-          p.empty#hand-empty Vous n'avez aucune carte en main
+          p.empty#hand-empty #{__("Vous n'avez aucune carte en main")}
 
       .col-3
       
         #visio
-          h6 Video conf
+          h6 #{__("Video conf")}
           video
 
-        h6 Personnages
+        h6 #{__("Personnages")}
         ul#players.list-unstyled
 
-        h6 Evènements
+        h6 #{__("Evènements")}
         ul#logs.list-unstyled

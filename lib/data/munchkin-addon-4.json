@@ -1,4 +1,5 @@
 {
+    "name": "Munchkin 4 - Ton destin est sellé !",
     "doors": [
         {"type":"class", "img":"munchkin-addon-4/barde.jpg", "name": "Barde"},
         {"type":"class", "img":"munchkin-addon-4/guerrier.jpg", "name": "Guerrier"},
