@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./server.js"
+    "start": "node ./server.js",
+    "serve": "vue serve",
+    "build": "vue build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -19,7 +21,10 @@
     "shortid": "^2.2.15",
     "shuffle-array": "^1.0.1",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "vue": "^2.6.11",
+    "vue-i18n": "^8.16.0",
+    "vue-socket.io": "^3.0.7"
   },
   "engines": {
     "node": "13.x"
