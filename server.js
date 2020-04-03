@@ -174,6 +174,7 @@ io.on('connection', function (socket) {
         playerId: playerId
       });
       broadcastGameList();
+      broadcastPlayersList(game);
       return;
     }
 
@@ -193,6 +194,7 @@ io.on('connection', function (socket) {
         access_token: json.access_key
       });
       broadcastGameList();
+      broadcastPlayersList(game);
     });
 
   });

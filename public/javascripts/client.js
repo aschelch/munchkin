@@ -117,6 +117,11 @@ $(function () {
 
     // Update player list
     socket.on('player-list', function (datas) {
+
+        if( ! currentPlayerId){
+            return;
+        }
+
         $("#players").empty();
         $("#players-boards .tabbable .nav-tabs").empty();
         $("#players-boards .tabbable .tab-content").empty();
@@ -170,7 +175,7 @@ $(function () {
         var tbody = $("#games table tbody");
         tbody.empty();
         games.forEach(game => {
-            tbody.append("<tr><td><strong>" + game.name + "</strong></td><td>" + displayPlayerList(game) + "</td><td>Aucune</td><td><a class='btn btn-primary btn-xs' href='/" + game.uid + "'>Rejoindre</a></td></tr>");
+            tbody.append("<tr><td><strong>" + game.name + "</strong></td><td>" + displayPlayerList(game) + "</td><td><a class='btn btn-primary btn-xs' href='/" + game.uid + "'>Rejoindre</a></td></tr>");
         });
     });
 
