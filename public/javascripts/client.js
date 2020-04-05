@@ -115,12 +115,15 @@ $(function () {
         });
     });
 
+    var playerTabSelected = '';
     // Update player list
     socket.on('player-list', function (datas) {
 
         if( ! currentPlayerId){
             return;
         }
+
+        playerTabSelected = $(".nav-tabs a.active").data("playerId");
 
         $("#players").empty();
         $("#players-boards .tabbable .nav-tabs").empty();
@@ -151,7 +154,7 @@ $(function () {
                     cardUl.append("<li class='list-inline-item'>" + displayCard(card) + "</li>");
                 });
 
-                $("#players-boards .tabbable .nav-tabs").append("<li><a href='#" + player.id + "' id='tab-" + player.id + "'class=''>" + player.name + " (Niveau " + player.level + ")</a></li>");
+                $("#players-boards .tabbable .nav-tabs").append("<li><a href='#" + player.id + "' id='tab-" + player.id + "' data-player-id='"+player.id+"' 'class=''>" + player.name + " (Niveau " + player.level + ")</a></li>");
                 $("#players-boards .tabbable .tab-content").append(cardUl);
 
                 firstPlayerNotCurrent = firstPlayerNotCurrent || player.id;
@@ -161,7 +164,9 @@ $(function () {
 
         });
 
-        if (firstPlayerNotCurrent) {
+        if (playerTabSelected) {
+            $("#tab-" + playerTabSelected).tab('show');
+        } else if (firstPlayerNotCurrent) {
             $("#tab-" + firstPlayerNotCurrent).tab('show');
         }
     });
